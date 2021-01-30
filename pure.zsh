@@ -222,6 +222,12 @@ prompt_pure_precmd() {
 		export VIRTUAL_ENV_DISABLE_PROMPT=12
 	fi
 
+	# AWS
+	psvar[13]=
+	if [[ -n $AWS_PROFILE ]]; then
+		psvar[13]="${AWS_PROFILE}"
+	fi
+
 	# Make sure VIM prompt is reset.
 	prompt_pure_reset_prompt_symbol
 
@@ -806,6 +812,7 @@ prompt_pure_setup() {
 		user                 242
 		user:root            default
 		virtualenv           242
+		aws                  yellow
 	)
 	prompt_pure_colors=("${(@kv)prompt_pure_colors_default}")
 
@@ -824,6 +831,9 @@ prompt_pure_setup() {
 
 	# If a virtualenv is activated, display it in grey.
 	PROMPT='%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)'
+
+	# IF AWS profile is set, display it in grey.
+	PROMPT+='%(13V.%F{$prompt_pure_colors[aws]}%13v%f .)'
 
 	# Prompt turns red if the previous command didn't exit with 0.
 	local prompt_indicator='%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]}%f '
